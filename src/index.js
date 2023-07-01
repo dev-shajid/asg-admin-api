@@ -10,23 +10,22 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cors({
     origin: '*' // TODO: Change to production URL when deployed
-
 }))
 
 // Database
 require('./db/dbConnect')()
 
-if (process.env.NODE_ENV === "production") {
+// Routes
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/user', require('./routes/userRoutes'));
+app.use('/api/course', require('./routes/courseRoutes'));
+
+if (process.env.NODE_ENV != "production") {
     app.use(express.static(path.resolve(__dirname, "./client/build")));
     app.get("*", function (request, response) {
         response.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
     });
 }
-
-// Routes
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/user', require('./routes/userRoutes'));
-app.use('/api/course', require('./routes/courseRoutes'));
 
 // Start the server
 const PORT = process.env.PORT || 8000;
