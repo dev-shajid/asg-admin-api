@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { createCourse, updateCourse, deleteCourse, getCourses, getTotalCourseNumber } = require('../controllers/courseControllers');
+const { createCourse, updateCourse, deleteCourse, getCourses, getTotalCourseNumber, getCoursesClient } = require('../controllers/courseControllers');
 const { authAdmin } = require('../middlewares/authMiddleware');
 
 
+router.get('/', getCoursesClient);
 router.get('/getCourses', getCourses);
 router.get('/count', getTotalCourseNumber);
 router.post('/createCourse', authAdmin, createCourse);

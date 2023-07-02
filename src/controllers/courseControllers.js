@@ -2,6 +2,27 @@ const Course = require('../models/courseModel');
 
 
 module.exports = {
+    getCoursesClient: async function (req, res) {
+        try {
+            if (req.query.id) {
+                const course = await Course.findById({ _id: req.query.id, })
+                if (course) {
+                    return res.status(200).json(course)
+                } else {
+                    return res.status(400).json({ error: "Didn't get any course" })
+                }
+            } else {
+                const { subject, chapter } = req.query
+                if (req.query.class && subject && chapter) {
+                    const courses = await Course.find({ class: req.query.class.toUpperCase(), subValue: subject, chapter })
+                    return res.status(200).json(courses)
+                }
+                return res.status(400).json({ error: "Failed to find Course" })
+            }
+        } catch (err) {
+            res.status(400).json({ errors: err.message })
+        }
+    },
     getCourses: async function (req, res) {
         try {
             if (req.query.id) {

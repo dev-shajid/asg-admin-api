@@ -9,12 +9,12 @@ const path = require('path')
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cors({
-    origin: '*' // TODO: Change to production URL when deployed
+    origin: ['*'] // TODO: Change to production URL when deployed
 }))
 
 // Database
 require('./db/dbConnect')()
-app.get('/hello', (req,res)=>res.send("Hello World"))
+app.get('/hello', (req, res) => res.send("Hello World"))
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
